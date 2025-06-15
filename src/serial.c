@@ -51,7 +51,10 @@ static void serial_poll(void) {
     if (connfd == -1) {
         fd_set accept_set;
         FD_ZERO(&accept_set);
-        FD_SET(sockfd, &accept_set);
+
+        if (sockfd >= 0)
+            FD_SET(sockfd, &accept_set);
+
         int ret = select(sockfd + 1, &accept_set, NULL, NULL, &timeout);
         if (ret == -1) {
             LOG_ERR(
